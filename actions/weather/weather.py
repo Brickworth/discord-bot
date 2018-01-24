@@ -43,8 +43,11 @@ class Weather:
         self.bearing(cur.windBearing), self.sensible_speed(cur.windSpeed),
         self.freedom_speed(cur.windSpeed)))
       if len(forecast.alerts()) > 0:
+        printedAlerts = []
         for alert in forecast.alerts():
-          messages.append('__**{}**__: {}: {}'.format(alert.severity.title(), alert.title, alert.uri))
+          if alert not in printedAlerts:
+            messages.append('__**{}**__: {}: {}'.format(alert.severity.title(), alert.title, alert.uri))
+            printedAlerts.append(alert)          
       yield from self.bot.say('{}'.format("\n".join(messages)))
     except Exception as e:
       yield from self.bot.say('I broke! 😭 {}'.format(str(e)))
